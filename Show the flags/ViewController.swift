@@ -19,17 +19,23 @@ class ViewController: UITableViewController {
     }
     
     func loadImages(){
-        let fm = FileManager.default
-        if let path = Bundle.main.resourcePath {
-            let items = try! fm.contentsOfDirectory(atPath: path)
-            for item in items {
-                if item.hasSuffix("png") {
-                    
-                    self.countries.append(item)
+        DispatchQueue.global().async {
+            let fm = FileManager.default
+            if let path = Bundle.main.resourcePath {
+                let items = try! fm.contentsOfDirectory(atPath: path)
+                for item in items {
+                    if item.hasSuffix("png") {
+                        
+                        self.countries.append(item)
+                    }
+                }
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
                 }
             }
         }
-        print(countries)
+        
+        
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
